@@ -1,0 +1,13 @@
+import { Router } from 'express';
+import * as ctrl from '../controllers/complaintController.js';
+import { protect } from '../middlewares/authMiddleware.js';
+const router = Router();
+router.use(protect);
+router.get('/', ctrl.getComplaints);
+router.get('/:id', ctrl.getComplaintById);
+router.post('/', ctrl.createComplaint);
+router.put('/:id', ctrl.updateComplaint);
+router.delete('/:id', ctrl.deleteComplaint);
+router.patch('/status/:id', ctrl.updateStatus);
+router.patch('/assign/:id', ctrl.assignComplaint);
+export default router;

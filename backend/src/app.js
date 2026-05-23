@@ -1,0 +1,26 @@
+import express from 'express';
+import helmet from 'helmet';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
+import rateLimit from 'express-rate-limit';
+import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import departmentRoutes from './routes/departmentRoutes.js';
+import complaintRoutes from './routes/complaintRoutes.js';
+import { errorHandler, notFound } from './middlewares/errorMiddleware.js';
+import { env } from './config/env.js';
+
+export const app = express();
+app.use(helmet());
+app.use(cors({ origin: env.clientOrigin, credentials: true }));
+app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 250 }));
+app.use(express.json({ limit: '5mb' }));
+app.use(cookieParser());
+app.use(morgan('dev'));
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/departments', departmentRoutes);
+app.use('/api/complaints', complaintRoutes);
+app.use(notFound);
+app.use(errorHandler);
