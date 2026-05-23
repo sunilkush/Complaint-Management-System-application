@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import * as ctrl from '../controllers/userController.js';
+import { protect } from '../middlewares/authMiddleware.js';
+import { authorize } from '../middlewares/roleMiddleware.js';
+const router = Router();
+router.use(protect, authorize('SUPER_ADMIN', 'ADMIN'));
+router.get('/', ctrl.getUsers);
+router.post('/', ctrl.createUser);
+router.put('/:id', ctrl.updateUser);
+router.delete('/:id', ctrl.deleteUser);
+export default router;
